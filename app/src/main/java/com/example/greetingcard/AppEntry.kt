@@ -14,13 +14,9 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.BottomNavigationItem
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.BottomAppBar
-import androidx.compose.material3.FabPosition
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -37,6 +33,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -44,6 +41,9 @@ object HomeRoute
 
 @Serializable
 object MyRoute
+
+@Serializable
+object AddRoute
 //
 //@Serializable
 //data class InfoPage(val query: String)
@@ -57,27 +57,10 @@ fun AppEntry() {
     Scaffold(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp),
+            .background(Color.Transparent),
         bottomBar = {
             BottomNavigationBar(navController)
-        },
-//        floatingActionButton = {
-//            FloatingActionButton(
-//                modifier = Modifier
-//                    .clip(CircleShape)
-//                    .size(45.dp),
-//                onClick = { navController.navigate(HomeRoute) }, // 改成别的页面
-//                shape = CircleShape,
-//                containerColor = Color.Transparent,
-//            ) {
-//                Icon(
-//                    ImageVector.vectorResource(id = R.drawable.add),
-//                    contentDescription = "Add",
-//                    tint = Color.Unspecified
-//                )
-//            }
-//        },
-//        floatingActionButtonPosition = FabPosition.Center // 让 FAB 居中
+        }
     ) { paddingValues ->
         NavHost(
             navController,
@@ -87,9 +70,11 @@ fun AppEntry() {
             composable<HomeRoute> {
                 HomePage()
             }
-
             composable<MyRoute> {
                 MyPage()
+            }
+            composable<AddRoute> {
+                AddPage() { navController.navigateUp() }
             }
 //            composable<InfoPage> { backStackEntry ->
 //                val infoPage: InfoPage = backStackEntry.toRoute()
@@ -116,6 +101,7 @@ fun BottomNavigationBar(navController: NavController) {
             .fillMaxWidth()
             .height(69.dp)
             .padding(horizontal = 62.dp)
+            .background(Color.Transparent)
     ) {
         Spacer(
             Modifier
@@ -176,7 +162,7 @@ fun BottomNavigationBar(navController: NavController) {
                 .clip(CircleShape)
                 .size(50.dp)
                 .align(Alignment.TopCenter),
-            onClick = { navController.navigate(HomeRoute) }, // 改成别的页面
+            onClick = { navController.navigate(AddRoute) },
             shape = CircleShape,
             containerColor = Color.Transparent,
         ) {
