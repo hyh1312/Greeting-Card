@@ -5,22 +5,20 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.os.Build
 import android.provider.MediaStore
-import android.view.View
 import android.widget.Toast
 import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.geometry.Offset
-import androidx.core.view.drawToBitmap
 import androidx.lifecycle.ViewModel
 import com.example.greetingcard.R
 import com.example.greetingcard.data.StickerData
 import java.io.IOException
 
-
 // ViewModel
 class DecorationViewModel : ViewModel() {
-    private val _background = mutableStateOf(R.drawable.bg1)
+    private val _background = mutableIntStateOf(R.drawable.bg1)
     val background: State<Int> = _background
 
     private val _stickers = mutableStateListOf<StickerData>()
@@ -41,14 +39,18 @@ class DecorationViewModel : ViewModel() {
         }
     }
 
+    var bitmap: Bitmap? = null
+
     fun changeBackground(resId: Int) {
-        _background.value = resId
+        _background.intValue = resId
     }
 
-    fun exportImage(context: Context, rootView: View) {
-        val bitmap = rootView.drawToBitmap()
-
-        saveToGallery(context, bitmap)
+    fun exportBitmap(context: Context) {
+        bitmap?.let {
+            saveToGallery(
+                context, it
+            )
+        }
     }
 
     private fun saveToGallery(context: Context, bitmap: Bitmap) {
@@ -60,7 +62,6 @@ class DecorationViewModel : ViewModel() {
                 put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/YourAppName")
             }
         }
-
         try {
             contentResolver.insert(
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
@@ -78,5 +79,3 @@ class DecorationViewModel : ViewModel() {
         }
     }
 }
-
-

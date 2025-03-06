@@ -33,7 +33,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.toRoute
+import com.example.greetingcard.ui.AddPage
+import com.example.greetingcard.ui.HomePage
+import com.example.greetingcard.ui.MyPage
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -44,12 +46,6 @@ object MyRoute
 
 @Serializable
 object AddRoute
-//
-//@Serializable
-//data class InfoPage(val query: String)
-//
-//@Serializable
-//object HistoryPage
 
 @Composable
 fun AppEntry() {
@@ -76,14 +72,6 @@ fun AppEntry() {
             composable<AddRoute> {
                 AddPage() { navController.navigateUp() }
             }
-//            composable<InfoPage> { backStackEntry ->
-//                val infoPage: InfoPage = backStackEntry.toRoute()
-//                InfoPage(infoPage.query) { navController.navigateUp() }
-//            }
-//            composable<HistoryPage> {
-//                HistoryPage(toDetail = { query -> navController.navigate(route = InfoPage(query)) }
-//                ) { navController.navigateUp() }
-//            }
         }
     }
 }
